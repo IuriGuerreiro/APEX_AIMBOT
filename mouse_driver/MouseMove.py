@@ -1,7 +1,9 @@
-import mouse_driver.ghub_mouse as ghub
+# import mouse_driver.ghub_mouse as ghub
+import mouse_driver.esp32_mouse as esp32
 
 def mouse_move(rel_x,rel_y):
-    ghub.mouse_xy(round(rel_x), round(rel_y))
+    # ghub.mouse_xy(round(rel_x), round(rel_y))
+    esp32.mouse_xy(round(rel_x), round(rel_y))
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ import time
 import numpy as np
 import pyautogui
 import argparse
+import win32gui
 from pynput.mouse import Button, Listener
 import cv2
 from mss.windows import MSS as mss
@@ -44,6 +45,7 @@ class AimBot:
     def initialize_params(self):
         self.auto_lock = True
         self.locking=False
+        self.last_window_title = None
 
         # default settings by game
         self.detect_length = 640
@@ -71,6 +73,14 @@ class AimBot:
         self.region = {"top": self.top, "left": self.left, "width": self.detect_length, "height": self.detect_length}
 
     def grab_screen(self):
+        try:
+            hwnd = win32gui.GetForegroundWindow()
+            window_title = win32gui.GetWindowText(hwnd)
+            if window_title != self.last_window_title:
+                print(f'[INFO] Screen detected / App screenshotting: {window_title}')
+                self.last_window_title = window_title
+        except Exception:
+            pass
         return cv2.cvtColor(np.asarray(self.camera.grab(self.region)), cv2.COLOR_BGR2RGB)
 
     def on_click(self, x, y, button, pressed):
@@ -143,6 +153,7 @@ class AimBot:
     def lock_target(self, target_sort_list):
         if len(target_sort_list) > 0 and self.locking:
             move_rel_x, move_rel_y, move_dis = self.get_move_dis(target_sort_list)
+            print(f'[DEBUG] Moving mouse: x={move_rel_x:.2f}, y={move_rel_y:.2f}, dist={move_dis:.2f}')
             mouse_move(move_rel_x, move_rel_y) # //2 for solving the shaking problem when
         self.pidx(0), self.pidy(0)
 

@@ -45,7 +45,7 @@ pidy_ki: 0.0
 save_screenshot: False
 # 'visualization'show detection window, turn off to reduce cpu and gpu usage
 # 'visualization'可视化检测窗口，关闭以减少cpu和gpu使用率
-visualization: False
+visualization: True
 # 'speed_test'speed test before start
 # 'speed_test'启动前的速度测试
 speed_test: False
